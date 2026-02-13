@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
 import {
     Camera,
@@ -39,7 +39,7 @@ export default function ListPage() {
 
     const supabase = createClient();
 
-    useState(() => {
+    useEffect(() => {
         const fetchProfile = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -59,7 +59,7 @@ export default function ListPage() {
             }
         };
         fetchProfile();
-    });
+    }, []);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
