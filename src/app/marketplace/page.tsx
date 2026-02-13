@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const CATEGORIES = ['All', 'Textbooks', 'Tools', 'Stationery', 'Electronics', 'Others'];
 
@@ -44,7 +45,8 @@ export default function Marketplace() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [savedIds, setSavedIds] = useState<string[]>([]);
     const [user, setUser] = useState<any>(null);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+    const router = useRouter();
 
     const supabase = createClient();
 
@@ -76,7 +78,7 @@ export default function Marketplace() {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            window.location.href = '/auth';
+            router.replace('/auth');
             return;
         }
 
@@ -92,7 +94,8 @@ export default function Marketplace() {
         }
 
         if (profile?.is_admin) {
-            window.location.replace('/admin');
+            setIsAdmin(true);
+            router.replace('/admin');
             return;
         }
         setIsAdmin(false);
@@ -203,6 +206,14 @@ export default function Marketplace() {
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    if (loading || isAdmin === null || isAdmin === true) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background pt-24 pb-12 px-6">

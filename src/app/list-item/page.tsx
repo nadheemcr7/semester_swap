@@ -24,7 +24,8 @@ const CONDITIONS = ['New', 'Like New', 'Used', 'Well Worn'];
 
 export default function ListPage() {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -43,7 +44,7 @@ export default function ListPage() {
         const fetchProfile = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) {
-                window.location.href = '/auth';
+                router.replace('/auth');
                 return;
             }
 
@@ -60,6 +61,7 @@ export default function ListPage() {
                     phone: data.phone || ''
                 }));
             }
+            setLoading(false);
         };
         fetchProfile();
     }, []);
@@ -143,9 +145,17 @@ export default function ListPage() {
         } catch (error: any) {
             alert(error.message);
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background pt-24 pb-12 px-6">
@@ -301,10 +311,10 @@ export default function ListPage() {
 
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={submitting}
                         className="w-full premium-gradient py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 hover:shadow-xl hover:shadow-primary/20 transition-all disabled:opacity-50"
                     >
-                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Publish Listing'}
+                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Publish Listing'}
                     </button>
                 </form>
             </div>

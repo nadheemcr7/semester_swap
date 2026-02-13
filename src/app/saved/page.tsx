@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function SavedItems() {
     const [items, setItems] = useState<any[]>([]);
@@ -24,6 +25,7 @@ export default function SavedItems() {
     const [selectedImageItem, setSelectedImageItem] = useState<any>(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
     const supabase = createClient();
 
     useEffect(() => {
@@ -34,7 +36,7 @@ export default function SavedItems() {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            window.location.href = '/auth';
+            router.replace('/auth');
             return;
         }
 
@@ -80,6 +82,14 @@ export default function SavedItems() {
             setItems(items.filter(i => i.id !== itemId));
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background pt-24 pb-12 px-6">

@@ -14,11 +14,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Inventory() {
     const [items, setItems] = useState<any[]>([]);
     const [soldHistory, setSoldHistory] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
     const supabase = createClient();
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export default function Inventory() {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            window.location.href = '/auth';
+            router.replace('/auth');
             return;
         }
 
@@ -73,6 +75,14 @@ export default function Inventory() {
 
         if (!error) fetchData();
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background pt-24 pb-12 px-6">
