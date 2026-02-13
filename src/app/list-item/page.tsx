@@ -42,20 +42,23 @@ export default function ListPage() {
     useEffect(() => {
         const fetchProfile = async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { data } = await supabase
-                    .from('profiles')
-                    .select('full_name, phone')
-                    .eq('id', user.id)
-                    .single();
+            if (!user) {
+                window.location.href = '/auth';
+                return;
+            }
 
-                if (data) {
-                    setFormData(prev => ({
-                        ...prev,
-                        fullName: data.full_name || '',
-                        phone: data.phone || ''
-                    }));
-                }
+            const { data } = await supabase
+                .from('profiles')
+                .select('full_name, phone')
+                .eq('id', user.id)
+                .single();
+
+            if (data) {
+                setFormData(prev => ({
+                    ...prev,
+                    fullName: data.full_name || '',
+                    phone: data.phone || ''
+                }));
             }
         };
         fetchProfile();

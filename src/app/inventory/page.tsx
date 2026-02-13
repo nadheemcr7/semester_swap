@@ -28,7 +28,10 @@ export default function Inventory() {
     const fetchData = async () => {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) {
+            window.location.href = '/auth';
+            return;
+        }
 
         // Fetch Active Inventory
         const { data: inventoryData } = await supabase

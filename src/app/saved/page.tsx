@@ -34,7 +34,7 @@ export default function SavedItems() {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            setLoading(false);
+            window.location.href = '/auth';
             return;
         }
 

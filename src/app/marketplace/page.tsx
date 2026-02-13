@@ -74,27 +74,28 @@ export default function Marketplace() {
 
     const checkUserStatus = async () => {
         const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
 
-        if (user) {
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('is_admin, full_name')
-                .eq('id', user.id)
-                .single();
-
-            if (profile) {
-                setUser({ ...user, full_name: profile.full_name });
-            }
-
-            if (profile?.is_admin) {
-                window.location.href = '/admin';
-                return;
-            }
-            setIsAdmin(false);
-        } else {
-            setIsAdmin(false);
+        if (!user) {
+            window.location.href = '/auth';
+            return;
         }
+
+        setUser(user);
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('is_admin, full_name')
+            .eq('id', user.id)
+            .single();
+
+        if (profile) {
+            setUser({ ...user, full_name: profile.full_name });
+        }
+
+        if (profile?.is_admin) {
+            window.location.href = '/admin';
+            return;
+        }
+        setIsAdmin(false);
     };
 
     const fetchSavedItems = async () => {
