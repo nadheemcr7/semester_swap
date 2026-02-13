@@ -8,12 +8,25 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', user.id)
+          .single();
+
+        if (profile?.is_admin) {
+          setIsAdmin(true);
+        }
+      }
     };
     fetchUser();
   }, []);
@@ -39,10 +52,17 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             {user ? (
-              <Link href="/inventory" className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all">
-                <Layout className="w-4 h-4 text-primary" />
-                Inventory
-              </Link>
+              isAdmin ? (
+                <Link href="/admin" className="flex items-center gap-2 bg-primary px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">
+                  <ShieldCheck className="w-4 h-4 text-white" />
+                  Admin Panel
+                </Link>
+              ) : (
+                <Link href="/inventory" className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all">
+                  <Layout className="w-4 h-4 text-primary" />
+                  Inventory
+                </Link>
+              )
             ) : (
               <>
                 <Link href="/auth" className="text-sm font-medium hover:text-white transition-colors">Sign In</Link>
@@ -75,15 +95,25 @@ export default function Home() {
               Save money, reduce waste, and help your peers.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/marketplace" className="w-full sm:w-auto px-8 py-4 bg-primary rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all group">
-                Browse Marketplace
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              {user ? (
-                <Link href="/inventory" className="w-full sm:w-auto px-8 py-4 glass-morphism rounded-2xl font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-                  <Layout className="w-5 h-5" />
-                  My Inventory
+              {isAdmin ? (
+                <Link href="/admin" className="w-full sm:w-auto px-8 py-4 bg-primary rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all group">
+                  Developer Dashboard
+                  <ShieldCheck className="w-5 h-5" />
                 </Link>
+              ) : (
+                <Link href="/marketplace" className="w-full sm:w-auto px-8 py-4 bg-primary rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all group">
+                  Browse Marketplace
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              )}
+
+              {user ? (
+                !isAdmin && (
+                  <Link href="/inventory" className="w-full sm:w-auto px-8 py-4 glass-morphism rounded-2xl font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                    <Layout className="w-5 h-5" />
+                    My Inventory
+                  </Link>
+                )
               ) : (
                 <Link href="/auth" className="w-full sm:w-auto px-8 py-4 glass-morphism rounded-2xl font-bold hover:bg-white/5 transition-all">
                   List an Item

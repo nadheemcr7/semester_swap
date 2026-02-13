@@ -92,7 +92,7 @@ export default function Marketplace() {
         }
 
         if (profile?.is_admin) {
-            window.location.href = '/admin';
+            window.location.replace('/admin');
             return;
         }
         setIsAdmin(false);
