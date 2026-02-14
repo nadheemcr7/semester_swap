@@ -30,6 +30,10 @@ export default function AuthPage() {
     const handleGoogleLogin = async () => {
         setLoading(true);
         try {
+            // Get the current URL origin (e.g., https://your-site.vercel.app)
+            const origin = typeof window !== 'undefined' ? window.location.origin : '';
+            const redirectUrl = `${origin}/marketplace`;
+
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
@@ -37,7 +41,7 @@ export default function AuthPage() {
                         hd: 'crescent.education', // Restricts to college domain
                         prompt: 'select_account',
                     },
-                    redirectTo: `${window.location.origin}/marketplace`,
+                    redirectTo: redirectUrl,
                 },
             });
             if (error) throw error;
