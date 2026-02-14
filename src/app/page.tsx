@@ -38,35 +38,35 @@ export default function Home() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/20 rounded-full blur-[120px] -z-10" />
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center glass-morphism rounded-2xl px-8 py-3">
+      <nav className="fixed top-0 w-full z-50 px-3 md:px-6 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center glass-morphism rounded-2xl px-4 md:px-8 py-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 premium-gradient rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 premium-gradient rounded-lg flex items-center justify-center shrink-0">
               <Recycle className="text-white w-5 h-5" />
             </div>
-            <span className="text-xl font-bold tracking-tight">SemesterSwap</span>
+            <span className="text-lg md:text-xl font-bold tracking-tight hidden sm:block">SemesterSwap</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted">
             <Link href="#features" className="hover:text-white transition-colors">Features</Link>
             <Link href="#how-it-works" className="hover:text-white transition-colors">How it works</Link>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4 ml-auto">
             {user ? (
               isAdmin ? (
-                <Link href="/admin" className="flex items-center gap-2 bg-primary px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">
-                  <ShieldCheck className="w-4 h-4 text-white" />
+                <Link href="/admin" className="flex items-center gap-2 bg-primary px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-semibold hover:opacity-90 transition-all whitespace-nowrap">
+                  <ShieldCheck className="w-3 md:w-4 h-3 md:h-4 text-white" />
                   Admin Panel
                 </Link>
               ) : (
-                <Link href="/inventory" className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all">
-                  <Layout className="w-4 h-4 text-primary" />
+                <Link href="/inventory" className="flex items-center gap-2 bg-white/5 px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-semibold hover:bg-white/10 transition-all whitespace-nowrap">
+                  <Layout className="w-3 md:w-4 h-3 md:h-4 text-primary" />
                   Inventory
                 </Link>
               )
             ) : (
               <>
-                <Link href="/auth" className="text-sm font-medium hover:text-white transition-colors">Sign In</Link>
-                <Link href="/auth" className="bg-white text-black px-5 py-2 rounded-xl text-sm font-semibold hover:bg-neutral-200 transition-all">
+                <Link href="/auth" className="text-xs md:text-sm font-medium hover:text-white transition-colors whitespace-nowrap px-1">Sign In</Link>
+                <Link href="/auth" className="bg-white text-black px-4 md:px-5 py-2 rounded-xl text-xs md:text-sm font-semibold hover:bg-neutral-200 transition-all whitespace-nowrap">
                   Get Started
                 </Link>
               </>
