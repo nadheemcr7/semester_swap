@@ -235,29 +235,32 @@ export default function Marketplace() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <Link href="/inventory" className="bg-white/5 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-white/10 transition-all border border-white/10">
-                            <Package className="w-5 h-5 text-primary" />
-                            My Inventory
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4">
+                        <Link href="/inventory" className="bg-white/5 text-white px-3 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-bold flex items-center gap-2 hover:bg-white/10 transition-all border border-white/10 text-xs md:text-base">
+                            <Package className="w-4 md:w-5 h-4 md:h-5 text-primary" />
+                            <span className="hidden sm:inline">My Inventory</span>
+                            <span className="sm:hidden">Items</span>
                         </Link>
-                        <Link href="/saved" className="bg-white/5 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-white/10 transition-all border border-white/10 relative group">
-                            <ShoppingBag className="w-5 h-5 text-accent group-hover:scale-110 transition-transform" />
-                            My Checkout
+                        <Link href="/saved" className="bg-white/5 text-white px-3 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-bold flex items-center gap-2 hover:bg-white/10 transition-all border border-white/10 relative group text-xs md:text-base">
+                            <ShoppingBag className="w-4 md:w-5 h-4 md:h-5 text-accent group-hover:scale-110 transition-transform" />
+                            <span className="hidden sm:inline">My Checkout</span>
+                            <span className="sm:hidden">Cart</span>
                             {savedIds.length > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-accent text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center shadow-lg shadow-accent/20 animate-in zoom-in duration-300">
+                                <span className="absolute -top-1.5 -right-1.5 bg-accent text-white text-[9px] md:text-[10px] font-black w-5 md:w-6 h-5 md:h-6 rounded-full flex items-center justify-center shadow-lg shadow-accent/20 animate-in zoom-in duration-300">
                                     {savedIds.length}
                                 </span>
                             )}
                         </Link>
-                        <Link href="/list-item" className="bg-primary text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
-                            <Plus className="w-5 h-5" />
-                            List New Item
+                        <Link href="/list-item" className="bg-primary text-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20 text-xs md:text-base">
+                            <Plus className="w-4 md:w-5 h-4 md:h-5" />
+                            <span className="hidden sm:inline">List New Item</span>
+                            <span className="sm:hidden">Sell</span>
                         </Link>
                         <button
                             onClick={handleLogout}
-                            className="p-3 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all"
+                            className="p-2.5 md:p-3 bg-red-500/10 text-red-500 rounded-xl md:rounded-2xl hover:bg-red-500 hover:text-white transition-all ml-auto md:ml-0"
                         >
-                            <LogOut className="w-5 h-5" />
+                            <LogOut className="w-4 md:w-5 h-4 md:h-5" />
                         </button>
                     </div>
                 </div>
